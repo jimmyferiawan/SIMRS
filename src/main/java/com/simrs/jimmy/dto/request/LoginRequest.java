@@ -1,4 +1,4 @@
-package com.simrs.jimmy.dto;
+package com.simrs.jimmy.dto.request;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package com.simrs.jimmy.advice;
 
-import com.simrs.jimmy.dto.format.BaseResponse;
-import com.simrs.jimmy.dto.format.ErrorResponse;
-import com.simrs.jimmy.dto.format.FieldValidResponse;
+import com.simrs.jimmy.dto.response.BaseResponse;
+import com.simrs.jimmy.dto.response.format.ErrorResponse;
+import com.simrs.jimmy.dto.response.format.FieldValidResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

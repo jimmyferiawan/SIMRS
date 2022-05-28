@@ -1,5 +1,7 @@
-package com.simrs.jimmy.dto.format;
+package com.simrs.jimmy.dto.response;
 
+import com.simrs.jimmy.dto.response.format.ErrorResponse;
+import com.simrs.jimmy.dto.response.format.SuccessResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

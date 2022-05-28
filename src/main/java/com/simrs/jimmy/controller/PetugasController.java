@@ -2,9 +2,9 @@ package com.simrs.jimmy.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.simrs.jimmy.dto.format.BaseResponse;
-import com.simrs.jimmy.dto.PetugasRequest;
-import com.simrs.jimmy.dto.format.SuccessResponse;
+import com.simrs.jimmy.dto.response.BaseResponse;
+import com.simrs.jimmy.dto.request.PetugasRequest;
+import com.simrs.jimmy.dto.response.format.SuccessResponse;
 import com.simrs.jimmy.entity.JK;
 import com.simrs.jimmy.entity.Petugas;
 import com.simrs.jimmy.service.PetugasService;

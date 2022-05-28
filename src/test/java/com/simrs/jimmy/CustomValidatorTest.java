@@ -1,8 +1,6 @@
 package com.simrs.jimmy;
 
-import com.simrs.jimmy.dto.PetugasRequest;
-import com.simrs.jimmy.entity.JK;
-import org.junit.jupiter.api.Assertions;
+import com.simrs.jimmy.dto.request.PetugasRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

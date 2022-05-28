@@ -1,4 +1,4 @@
-package com.simrs.jimmy.dto.format;
+package com.simrs.jimmy.dto.response.format;
 
 import lombok.Data;
 
