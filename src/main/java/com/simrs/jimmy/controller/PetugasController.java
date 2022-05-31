@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.simrs.jimmy.dto.response.BaseResponse;
 import com.simrs.jimmy.dto.request.PetugasRequest;
 import com.simrs.jimmy.dto.response.format.SuccessResponse;
-import com.simrs.jimmy.entity.JK;
+import com.simrs.jimmy.entity.constenum.JK;
 import com.simrs.jimmy.entity.Petugas;
 import com.simrs.jimmy.service.PetugasService;
 import org.springframework.beans.factory.annotation.Autowired;

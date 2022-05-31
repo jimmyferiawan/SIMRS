@@ -1,6 +1,8 @@
 package com.simrs.jimmy.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.simrs.jimmy.entity.constenum.JK;
 
 import javax.persistence.*;
 import java.text.ParseException;
@@ -33,6 +35,7 @@ public class Petugas {
     @Column(length = 200, nullable = true)
     private String alamat;
 
+    @JsonIgnore
     @Column(length = 200, nullable = true)
     private String password;
 
