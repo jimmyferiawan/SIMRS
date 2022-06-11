@@ -3,6 +3,9 @@ package com.simrs.jimmy.advice;
 import com.simrs.jimmy.dto.response.BaseResponse;
 import com.simrs.jimmy.dto.response.format.ErrorResponse;
 import com.simrs.jimmy.dto.response.format.FieldValidResponse;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -81,5 +84,32 @@ public class CustomControllerAdvice {
         baseResponse = new BaseResponse(false, "Data dengan id " + ex.getMessage() + " sudah ada");
 
         return new ResponseEntity<>(baseResponse, HttpStatus.CONFLICT);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<BaseResponse> jwtErrorException(JwtException ex, WebRequest request) {
+        log.info("Jwt error");
+        baseResponse = new BaseResponse(false, ex.getMessage());
+
+        return new ResponseEntity<>(baseResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<BaseResponse> jwtExpiredException(ExpiredJwtException ex, WebRequest request) {
+        log.info("Jwt expired");
+        baseResponse = new BaseResponse(false, ex.getMessage());
+
+        return new ResponseEntity<>(baseResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<BaseResponse> jwtMalformedException(MalformedJwtException ex, WebRequest request) {
+        log.info("Jwt malformed");
+        baseResponse = new BaseResponse(false, ex.getMessage());
+
+        return new ResponseEntity<>(baseResponse, HttpStatus.UNAUTHORIZED);
     }
 }
