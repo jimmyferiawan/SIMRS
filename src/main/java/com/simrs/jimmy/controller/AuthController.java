@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+//TODO: implements refresh token
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
