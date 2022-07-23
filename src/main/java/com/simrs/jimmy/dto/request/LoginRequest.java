@@ -6,4 +6,12 @@ import lombok.Data;
 public class LoginRequest {
     private String nip;
     private String password;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "nip='" + nip + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

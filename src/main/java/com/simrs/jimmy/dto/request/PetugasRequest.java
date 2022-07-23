@@ -34,7 +34,7 @@ public class PetugasRequest {
 
     @NotNull(message = "tanggal lahir tidak boleh kosong atau format tanggal salah")
 //    @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[0-1])$", message = "Format tanggl salah yyyy-MM-dd (ex 2012-01-30)")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Bangkok")
+    @JsonFormat(timezone = "Asia/Bangkok")
     private Date tgl_lahir;
 
     private String alamat;
