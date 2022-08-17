@@ -2,6 +2,7 @@ package com.simrs.jimmy.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,6 +24,9 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwkTokenUtil jwkTokenUtil;
 
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver resolver;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -45,6 +50,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (BadCredentialsException ex) {
             System.out.println("BadCredentialsException");
+//            resolver.resolveException(request, response, null, new BadCredentialsException("bad credentials"));
             request.setAttribute("exception", ex);
         } catch (Exception ex) {
             System.out.println("Exception");

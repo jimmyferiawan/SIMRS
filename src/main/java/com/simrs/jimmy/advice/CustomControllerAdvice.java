@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -111,6 +113,24 @@ public class CustomControllerAdvice {
         baseResponse = new BaseResponse(false, ex.getMessage());
 
         return new ResponseEntity<>(baseResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<BaseResponse> jwtBadCredentialException(BadCredentialsException ex, WebRequest request) {
+        log.info("Jwt malformed");
+        baseResponse = new BaseResponse(false, ex.getMessage());
+
+        return new ResponseEntity<>(baseResponse, HttpStatus.UNAUTHORIZED);
+    }
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<BaseResponse> methodNotAllowed(HttpRequestMethodNotSupportedException ex, WebRequest request) {
+        log.info("Request Method not allowed");
+        ex.printStackTrace();
+        baseResponse = new BaseResponse(false, ex.getMessage());
+
+        return new ResponseEntity<>(baseResponse, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
 }

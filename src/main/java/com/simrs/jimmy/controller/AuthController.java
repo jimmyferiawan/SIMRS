@@ -38,7 +38,7 @@ public class AuthController {
     JwkTokenUtil jwkTokenUtil;
 
     @PostMapping("/signin")
-    public ResponseEntity<BaseResponse> loginUser(HttpServletRequest request, @RequestBody @Valid @NotNull LoginRequest loginRequest) throws Exception {
+    public ResponseEntity<TokenLogin> loginUser(HttpServletRequest request, @RequestBody @Valid @NotNull LoginRequest loginRequest) throws Exception {
         log.info("=====================================================");
         log.info("POST " + request.getServletPath());
         log.info("-----------------------------------------------------");
@@ -60,7 +60,13 @@ public class AuthController {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(loginRequest.getNip());
         String token = jwkTokenUtil.generateToken(userDetails);
 
-        return  ResponseEntity.ok().body(new BaseResponse(true, "login sukses", SuccessResponse.build(TokenResponse.build(token))));
+        return  ResponseEntity.ok().body(new TokenLogin(true, "login sukses", SuccessResponse.build(TokenResponse.build(token))));
     }
 
+}
+
+class TokenLogin extends BaseResponse<TokenResponse>{
+    public TokenLogin(boolean success, String message, SuccessResponse response) {
+        super(success, message, response);
+    }
 }

@@ -11,6 +11,7 @@ import com.simrs.jimmy.service.PetugasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +26,7 @@ public class PetugasController {
     private PetugasService petugasService;
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<BaseResponse> savePetugas(@RequestBody @Valid PetugasRequest petugasRequest) {
+    public ResponseEntity<PostAndGetPetugas> savePetugas(@RequestBody @Valid PetugasRequest petugasRequest) {
         System.out.println("savePetugas()->petugasRequest");
         try {
             System.out.println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(petugasRequest));
@@ -33,10 +34,11 @@ public class PetugasController {
             e.printStackTrace();
         }
         Petugas petugas = petugasService.createPetugas(new Petugas(petugasRequest.getNip(), petugasRequest.getNama(), JK.valueOf(petugasRequest.getJk()), petugasRequest.getTmp_lahir(), petugasRequest.getTgl_lahir(), petugasRequest.getAlamat(), petugasRequest.getPassword()));
-        respPetugas = new BaseResponse();
-        SuccessResponse<Petugas> petugasRequestSuccessResponse = new SuccessResponse<>();
-        petugasRequestSuccessResponse.setData(petugas);
-        respPetugas.setResponse(petugasRequestSuccessResponse);
+        PostAndGetPetugas respPetugas = new PostAndGetPetugas();
+//        SuccessResponse<Petugas> petugasRequestSuccessResponse = new SuccessResponse<>();
+//        petugasRequestSuccessResponse.setData(petugas);
+//        respPetugas.setResponse(petugasRequestSuccessResponse);
+        respPetugas.setResponse(SuccessResponse.build(petugas));
         respPetugas.setSuccess(true);
         respPetugas.setMessage("berhasil post data");
 
@@ -44,14 +46,15 @@ public class PetugasController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<BaseResponse> getAllPetugas() {
-        respPetugas = new BaseResponse();
+    public ResponseEntity<GetAllPetugas> getAllPetugas() {
+        GetAllPetugas respPetugas = new GetAllPetugas();
         List<Petugas> allPetugas;
-        SuccessResponse<List<Petugas>> petugasListAll = new SuccessResponse<>();
+//        SuccessResponse<List<Petugas>> petugasListAll = new SuccessResponse<>();
         HttpStatus status;
         try {
             allPetugas = petugasService.readAllPetugas();
-            petugasListAll.setData(allPetugas);
+//            petugasListAll.setData(allPetugas);
+//            respPetugas.setResponse(SuccessResponse.build(allPetugas));
             respPetugas.setResponse(SuccessResponse.build(allPetugas));
             respPetugas.setMessage("Berhasil get data Petugas");
             respPetugas.setSuccess(true);
@@ -66,32 +69,42 @@ public class PetugasController {
     }
 
     @GetMapping(path = "/{nip}", produces = "application/json")
-    public ResponseEntity<BaseResponse> getPetugas(@PathVariable String nip) {
+    public ResponseEntity<PostAndGetPetugas> getPetugas(@PathVariable String nip) {
         nip = nip.trim();
         Petugas petugas;
         petugas = petugasService.readPetugasById(nip);
-        SuccessResponse<Petugas> successResponse = SuccessResponse.build(petugas);
-        BaseResponse resp = new BaseResponse(true, "berhasil get data", successResponse);
+//        SuccessResponse<Petugas> successResponse = SuccessResponse.build(petugas);
+        PostAndGetPetugas resp = new PostAndGetPetugas();
+        resp.setSuccess(true);
+        resp.setMessage("Berhasil get data");
+        resp.getResponse().setData(petugas);
 
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{nip}")
-    public ResponseEntity<BaseResponse> updatePetugas(@RequestBody PetugasRequest petugasRequest, @PathVariable String nip) {
+    public ResponseEntity<PostAndGetPetugas> updatePetugas(@RequestBody PetugasRequest petugasRequest, @PathVariable String nip) {
         nip = nip.trim();
         Petugas petugas = new Petugas(nip, petugasRequest.getNama(), petugasRequest.getJk(), petugasRequest.getTmp_lahir(), petugasRequest.getTgl_lahir(), petugasRequest.getAlamat(), petugasRequest.getPassword());
         petugasService.updatePetugas(petugas, nip);
-        BaseResponse resp = new BaseResponse(true, "berhasil update data", SuccessResponse.build(petugas));
+        PostAndGetPetugas resp = new PostAndGetPetugas();
+//        SuccessResponse<Petugas> successResponse = new SuccessResponse<>(petugas);
+        resp.setResponse(SuccessResponse.build(petugas));
+        resp.setMessage("Berhasil update data");
+        resp.setSuccess(true);
 
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{nip}")
-    public ResponseEntity<BaseResponse> deletePetugas(@PathVariable String nip) {
+    public ResponseEntity<DeletePetugas> deletePetugas(@PathVariable String nip) {
         nip = nip.trim();
         petugasService.deletePetugas(nip);
+        DeletePetugas respDel = new DeletePetugas();
+        respDel.setSuccess(true);
+        respDel.setMessage("Berhasil hapus data");
 
-        return ResponseEntity.ok().body(new BaseResponse(true, "Berhasil hapus data"));
+        return ResponseEntity.ok().body(respDel);
     }
 //    @GetMapping(path = "/tes/{nip}", produces = "application/json")
 //    public ResponseEntity<BaseResponse> readCoba(@PathVariable String nip) {
@@ -113,4 +126,11 @@ public class PetugasController {
 //        petugasService.create();
 //        return "createCoba()";
 //    }
+}
+
+class PostAndGetPetugas extends BaseResponse<Petugas> {
+}
+class GetAllPetugas extends BaseResponse<List<Petugas>>{
+}
+class DeletePetugas extends BaseResponse{
 }

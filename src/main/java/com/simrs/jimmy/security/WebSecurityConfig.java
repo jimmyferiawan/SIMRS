@@ -48,9 +48,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        final String[] NEED_AUTH_URL = {
+          "/petugas", "/pasien"
+        };
+        final String[] WHITE_LIST_URL = {
+                "/", "/sleep/**", "/auth/signin","/auth/register"
+        };
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/petugas").hasRole("USER") // add route here to required authentication
-                .antMatchers("/auth/signin","/auth/register").permitAll().anyRequest().authenticated() // add route here if doesn't authentication
+                .authorizeRequests().antMatchers("/petugas", "/petugas/**","/pasien", "/pasien/**").hasRole("USER") // add route here to required authentication
+                .antMatchers("/", "/sleep/**", "/auth/signin","/auth/register").permitAll().anyRequest().authenticated() // add route here if doesn't authentication
                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).
                 and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).
                 and().addFilterBefore(customJwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SuccessResponse<T> {
     private T data;
+
 }

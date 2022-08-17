@@ -1,6 +1,10 @@
 package com.simrs.jimmy.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.simrs.jimmy.dto.response.BaseResponse;
+import com.simrs.jimmy.dto.response.format.ErrorMessageResponse;
+import com.simrs.jimmy.dto.response.format.ErrorResponse;
+import com.simrs.jimmy.dto.response.format.FieldValidResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -28,8 +32,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         } else {
             message = authException.getMessage();
         }
-
-        byte[] body = new ObjectMapper().writeValueAsBytes(Collections.singletonMap("error", message));
+        BaseResponse resp = new BaseResponse(false, message);
+        byte[] body = new ObjectMapper().writeValueAsBytes(resp);
 
         response.getOutputStream().write(body);
     }
